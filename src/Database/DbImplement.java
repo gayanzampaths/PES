@@ -16,7 +16,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -67,7 +70,7 @@ public class DbImplement implements DbInterface{
     public void openConn() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            this.connection = DriverManager.getConnection("jdbc:mysql://localhost/pes","root","root");
+            this.connection = DriverManager.getConnection("jdbc:mysql://localhost/pes","root","");
             System.out.println("Connection Established Successfully!");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Error : " + e.getMessage());
@@ -144,7 +147,7 @@ public class DbImplement implements DbInterface{
             
             for(int k=1; k<sheet.getRow(0).getLastCellNum(); k++){
                 try {
-                    sqlteam = "INSERT INTO teamdata (date, team, supervisor) VALUES (?,?,?)";
+                    sqlteam = "INSERT INTO productionteamdata (date, team, supervisor) VALUES (?,?,?)";
                     PreparedStatement pst = this.connection.prepareStatement(sqlteam);
                     
                     pst.setString(1, date);
@@ -165,7 +168,7 @@ public class DbImplement implements DbInterface{
                     data[2] = formatter.formatCellValue(row.getCell(0));
                     
                     try {
-                        sqlset = "INSERT INTO setteams (date, epfNo, team, operation) VALUES(?,?,?,?)";
+                        sqlset = "INSERT INTO productionsetteams (date, epfNo, team, operation) VALUES(?,?,?,?)";
                         PreparedStatement pstm = this.connection.prepareStatement(sqlset);
 
                         pstm.setString(1, date);
@@ -195,7 +198,7 @@ public class DbImplement implements DbInterface{
     public boolean register(User user) {
         try {
             String sqluser = "INSERT INTO users VALUES (?,?,?)";
-            String sqldata = "INSERT INTO userdata (epfNo,designation) VALUES (?,?)";
+            String sqldata = "INSERT INTO userdata (epfNo,department,designation,joinDate) VALUES (?,?,?,?)";
             
             PreparedStatement pstUser = this.connection.prepareStatement(sqluser);
             PreparedStatement pstData = this.connection.prepareStatement(sqldata);
@@ -205,7 +208,12 @@ public class DbImplement implements DbInterface{
             pstUser.setString(3, user.getPassword());
             
             pstData.setString(1, user.getEpfNo());
-            pstData.setInt(2, user.getDesignation());
+            pstData.setInt(2, user.getDepartment());
+            pstData.setInt(3, user.getDesignation());
+            
+            SimpleDateFormat datef = new SimpleDateFormat("YYYY-MM-dd");
+            
+            pstData.setString(4, datef.format(new Date()));
             
             pstUser.executeUpdate();
             pstData.executeUpdate();
@@ -281,6 +289,60 @@ public class DbImplement implements DbInterface{
             }
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    User getDetails(String epfNo) {
+        try {
+            String query = "SELECT * FROM userdata WHERE epfNo = '"+epfNo+"'";
+            PreparedStatement pst = this.connection.prepareStatement(query);
+            ResultSet rst = pst.executeQuery();
+            User user = null;
+            if(rst.next()){
+                user = new User();
+                user.setEpfNo(rst.getString("epfNo"));
+                user.setName(rst.getString("name"));
+                user.setNameUse(rst.getString("nameUse"));
+                user.setGender(rst.getString("gender"));
+                user.setNum(rst.getString("num"));
+                user.setStreet(rst.getString("street"));
+                user.setCity1(rst.getString("city1"));
+                user.setCity2(rst.getString("city2"));
+                user.setDob(rst.getString("dob"));
+                user.setNic(rst.getString("nic"));
+                user.setReligion(rst.getInt("religion"));
+                user.setNationality(rst.getInt("nationality"));
+                user.setMaritalStatus(rst.getInt("maritalStatus"));
+                user.setPhone(rst.getString("phone"));
+                user.setEmail(rst.getString("email"));
+                user.setDepartment(rst.getInt("department"));
+                user.setDesignation(rst.getInt("designation"));
+                user.setJoinDate(rst.getString("joinDate"));
+            }
+            return user;
+        } catch (SQLException e) {
+            System.out.println("Error : "+e.getMessage());
+            return null;
+        }
+    }
+
+    boolean UpdateDetails(User user) {
+        try {
+            String sqldata = "UPDATE userdata SET name ='"+user.getName()+"',nameUse ='"+user.getNameUse()+"',gender ='"+user.getGender()+"',num ='"+user.getNum()+"',street = '"+user.getStreet()+"',city1 ='"+user.getCity1()+"',city2 = '"+user.getCity2()+"',dob ='"+user.getDob()+"',nic = '"+user.getNic()+"',religion ='"+user.getReligion()+"',nationality = '"+user.getNationality()+"',maritalStatus = '"+user.getMaritalStatus()+"',phone = '"+user.getPhone()+"',email ='"+user.getEmail()+"' WHERE epfNo ='"+user.getEpfNo()+"'";
+            
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(sqldata);
+            
+            return true;
+        } catch (SQLException e) {
+            if(e.getErrorCode()==1062){
+                JOptionPane.showMessageDialog(null, e.getMessage(),"Duplication Warning!",JOptionPane.WARNING_MESSAGE);
+                return false;
+            }else{
+                JOptionPane.showMessageDialog(null, "Registration Failed! check your data.", "Registration Failed!", JOptionPane.ERROR_MESSAGE);
+                System.out.println(e);
+                return false;
+            }
         }
     }
     

@@ -66,4 +66,12 @@ public class DbController {
     public Attendence getEPFAtt(String epf) {
         return this.dbimpl.getEPFAtt(epf);
     }
+
+    public User getDetails(String epfNo) {
+        return this.dbimpl.getDetails(epfNo);
+    }
+
+    public boolean UpdateDetails(User userd) {
+        return this.dbimpl.UpdateDetails(userd);
+    }
 }

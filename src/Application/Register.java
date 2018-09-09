@@ -51,11 +51,13 @@ public class Register extends javax.swing.JFrame {
         desig = new javax.swing.JComboBox<>();
         pwd = new javax.swing.JPasswordField();
         cpwd = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        close = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         register = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        depart = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Performance Evaluation System - New User Registration");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -123,8 +125,13 @@ public class Register extends javax.swing.JFrame {
 
         cpwd.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jButton1.setText("Back");
+        close.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        close.setText("Close");
+        close.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMouseClicked(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jButton2.setText("Clear All");
@@ -136,6 +143,12 @@ public class Register extends javax.swing.JFrame {
                 registerMouseClicked(evt);
             }
         });
+
+        jLabel9.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel9.setText("Department :");
+
+        depart.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        depart.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Your Department", "HR Department", "Marketing Department", "Cutting Department", "Production Department", "Finishing Department", "Other" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -152,21 +165,23 @@ public class Register extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1))
+                                .addComponent(close))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE))
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(epfno)
                                     .addComponent(username)
                                     .addComponent(desig, 0, 691, Short.MAX_VALUE)
                                     .addComponent(pwd)
-                                    .addComponent(cpwd)))))
+                                    .addComponent(cpwd)
+                                    .addComponent(depart, 0, 691, Short.MAX_VALUE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(369, 369, 369)
                         .addComponent(jLabel3)))
@@ -190,6 +205,10 @@ public class Register extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(desig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(depart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -198,9 +217,9 @@ public class Register extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(cpwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(close)
                     .addComponent(jButton2)
                     .addComponent(register))
                 .addContainerGap())
@@ -228,16 +247,22 @@ public class Register extends javax.swing.JFrame {
             user.setEpfNo(epfno.getText());
             user.setUsername(username.getText());
             user.setDesignation(desig.getSelectedIndex());
+            user.setDepartment(depart.getSelectedIndex());
             user.setPassword(pwd.getText());
             
             if(dbctrl.register(user)){
                 JOptionPane.showMessageDialog(null, "Registration Complete! Use your credintials to LogIn.", "Successful!", JOptionPane.INFORMATION_MESSAGE);
-                Login login = new Login();
-                login.setVisible(true);
-                this.dispose();
+//                Login login = new Login();
+//                login.setVisible(true);
+//                this.dispose();
             }
         }
     }//GEN-LAST:event_registerMouseClicked
+
+    private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_closeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -275,10 +300,11 @@ public class Register extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton close;
     private javax.swing.JPasswordField cpwd;
+    private javax.swing.JComboBox<String> depart;
     private javax.swing.JComboBox<String> desig;
     private javax.swing.JTextField epfno;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -288,6 +314,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField pwd;

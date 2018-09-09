@@ -204,7 +204,7 @@ public class Login extends javax.swing.JFrame {
         User user = this.dbctrl.signIn(this.uname.getText(), this.pwd.getText());
         
         if(user!=null){
-            MainMenu mainMenu = new MainMenu();
+            MainMenu mainMenu = new MainMenu(user);
             mainMenu.setVisible(true);
             this.dispose();
         }else{

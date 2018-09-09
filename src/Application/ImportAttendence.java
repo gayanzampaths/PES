@@ -62,9 +62,9 @@ public class ImportAttendence extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         filePath = new javax.swing.JTextField();
         upload = new javax.swing.JButton();
-        back = new javax.swing.JButton();
+        close = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Performance Evaluation System - Attendence");
         setResizable(false);
 
@@ -81,6 +81,7 @@ public class ImportAttendence extends javax.swing.JFrame {
         jLabel2.setText("Performance Evaluation System");
 
         jLabel6.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Attendence Management");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -112,10 +113,9 @@ public class ImportAttendence extends javax.swing.JFrame {
         );
 
         jPanel4.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Attendence Filter", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Calibri", 1, 14), new java.awt.Color(0, 0, 0))); // NOI18N
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Attendence Filter", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Calibri", 1, 14))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Filter Attendence by Date :");
 
         showAtt.setModel(new javax.swing.table.DefaultTableModel(
@@ -145,7 +145,6 @@ public class ImportAttendence extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Filter Attendence by EPF No :");
 
         epf.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -207,10 +206,9 @@ public class ImportAttendence extends javax.swing.JFrame {
         );
 
         jPanel3.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Import Attendence", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Calibri", 1, 14), new java.awt.Color(0, 0, 0))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Import Attendence", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Calibri", 1, 14))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Import Attendence File as Spread Sheet File");
 
         filePath.setEditable(false);
@@ -258,8 +256,13 @@ public class ImportAttendence extends javax.swing.JFrame {
                 .addGap(0, 14, Short.MAX_VALUE))
         );
 
-        back.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        back.setText("Back");
+        close.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        close.setText("Close");
+        close.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -273,7 +276,7 @@ public class ImportAttendence extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(back)))
+                        .addComponent(close)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -285,7 +288,7 @@ public class ImportAttendence extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(back)
+                .addComponent(close)
                 .addContainerGap())
         );
 
@@ -378,6 +381,11 @@ public class ImportAttendence extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_epfSearchMouseClicked
 
+    private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_closeMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -415,7 +423,7 @@ public class ImportAttendence extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser DatePick;
-    private javax.swing.JButton back;
+    private javax.swing.JButton close;
     private javax.swing.JButton dateFilter;
     private javax.swing.JTextField epf;
     private javax.swing.JButton epfSearch;

@@ -5,6 +5,7 @@
  */
 package Application;
 
+import Models.User;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,12 +14,17 @@ import java.util.Date;
  * @author gayan
  */
 public class MainMenu extends javax.swing.JFrame {
+    
+    private final User userd;
 
     /**
      * Creates new form MainMenu
+     * @param user
      */
-    public MainMenu() {
+    public MainMenu(User user) {
         initComponents();
+        
+        userd = user;
         
         //get system date and time to display on main menu
         DisplayDate();
@@ -42,6 +48,9 @@ public class MainMenu extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        attDetails = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Performance Evaluation System - Main Menu");
@@ -107,15 +116,46 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGap(0, 311, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("File");
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jMenuItem1.setText("jMenuItem1");
+        jMenu1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jMenu1.setText("Users");
+
+        jMenuItem1.setText("New User Registration");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jMenu2.setText("Employee Details");
+
+        jMenuItem2.setText("View Employee Details");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jMenu3.setText("Add Details");
+
+        attDetails.setText("Attendance Management");
+        attDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attDetailsActionPerformed(evt);
+            }
+        });
+        jMenu3.add(attDetails);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -133,6 +173,24 @@ public class MainMenu extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1016, 589));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void attDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attDetailsActionPerformed
+        // TODO add your handling code here:
+        ImportAttendence impAtt = new ImportAttendence();
+        impAtt.setVisible(true);
+    }//GEN-LAST:event_attDetailsActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        Register reg = new Register();
+        reg.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        EmployeeDetails empd= new EmployeeDetails(userd.getEpfNo());
+        empd.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,19 +222,22 @@ public class MainMenu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainMenu().setVisible(true);
+                //new MainMenu().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem attDetails;
     private javax.swing.JLabel dateTime;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

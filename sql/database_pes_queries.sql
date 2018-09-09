@@ -14,7 +14,7 @@
  CHARACTER SET = utf8;
 
  --Create Table called setteams (one to one relationship with attendence)
- CREATE TABLE setteams (date date NOT NULL,
+ CREATE TABLE productionsetteams (date date NOT NULL,
  	epfNo varchar(10) NOT NULL,
  	team varchar(2),
  	operation varchar(100),
@@ -27,10 +27,11 @@
  DELETE TABLE setteams;
 
  --Create table called teamdata (one to many relationship with setteams)
- CREATE TABLE teamdata (date date NOT NULL,
+ CREATE TABLE productionteamdata (date date NOT NULL,
  	team varchar(2) NOT NULL,
  	supervisor varchar(50),
- 	PRIMARY KEY (date, team))
+ 	PRIMARY KEY (date, team),
+ 	CONSTRAINT fk_teamdata FOREIGN KEY (date, supervisor) REFERENCES attendence(date, epfNo) ON UPDATE CASCADE)
  ENGINE = InnoDB
  CHARACTER SET = utf8;
 

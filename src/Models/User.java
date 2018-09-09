@@ -21,12 +21,12 @@ public class User {
     private String city2;
     private String dob;
     private String nic;
-    private String religion;
-    private String nationality;
-    private String maritalStatus;
+    private int religion;
+    private int nationality;
+    private int maritalStatus;
     private String phone;
     private String email;
-    private String department;
+    private int department;
     private int designation;
     private String joinDate;
     private String barcode;
@@ -176,42 +176,42 @@ public class User {
     /**
      * @return the religion
      */
-    public String getReligion() {
+    public int getReligion() {
         return religion;
     }
 
     /**
      * @param religion the religion to set
      */
-    public void setReligion(String religion) {
+    public void setReligion(int religion) {
         this.religion = religion;
     }
 
     /**
      * @return the nationality
      */
-    public String getNationality() {
+    public int getNationality() {
         return nationality;
     }
 
     /**
      * @param nationality the nationality to set
      */
-    public void setNationality(String nationality) {
+    public void setNationality(int nationality) {
         this.nationality = nationality;
     }
 
     /**
      * @return the maritalStatus
      */
-    public String getMaritalStatus() {
+    public int getMaritalStatus() {
         return maritalStatus;
     }
 
     /**
      * @param maritalStatus the maritalStatus to set
      */
-    public void setMaritalStatus(String maritalStatus) {
+    public void setMaritalStatus(int maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 
@@ -246,14 +246,14 @@ public class User {
     /**
      * @return the department
      */
-    public String getDepartment() {
+    public int getDepartment() {
         return department;
     }
 
     /**
      * @param department the department to set
      */
-    public void setDepartment(String department) {
+    public void setDepartment(int department) {
         this.department = department;
     }
 
