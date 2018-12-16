@@ -44,8 +44,8 @@
  	outputs varchar(10),
  	hours varchar(10),
  	efficiency varchar(10),
- 	PRIMARY KEY (date, team, supervisor),
- 	CONSTRAINT fk_producteff FOREIGN KEY (date, team, supervisor) REFERENCES productionteamdata(date, team, supervisor) ON UPDATE CASCADE)
+ 	PRIMARY KEY (date, team),
+ 	CONSTRAINT fk_producteff FOREIGN KEY (date, team) REFERENCES productionteamdata(date, team) ON UPDATE CASCADE)
  ENGINE = InnoDB
  CHARACTER SET = utf8;
 
@@ -57,7 +57,7 @@
  	defect varchar(10),
  	defectRate varchar(10),
  	PRIMARY KEY (date, team, supervisor),
- 	CONSTRAINT fk_productdef FOREIGN KEY (date, team, supervisor) REFERENCES productionteamdata(date, team, supervisor) ON UPDATE CASCADE)
+ 	CONSTRAINT fk_productdef FOREIGN KEY (date, team) REFERENCES productionteamdata(date, team) ON UPDATE CASCADE)
  ENGINE = InnoDB
  CHARACTER SET = utf8;
 
