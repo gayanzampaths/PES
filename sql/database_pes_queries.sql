@@ -23,6 +23,14 @@
  ENGINE = InnoDB
  CHARACTER SET = utf8;
 
+--Create cuttingdepartmentemp one to one with attendance
+ CREATE TABLE cuttingdepartmentemp(date date NOT NULL,
+ 	epfNo varchar(10) NOT NULL,
+ 	PRIMARY KEY (date, epfNo),
+ 	CONSTRAINT fk_cuttingdepemp FOREIGN KEY (date, epfNo) REFERENCES attendence (date, epfNo) ON UPDATE CASCADE)
+ ENGINE = InnoDB
+ CHARACTER SET = utf8;
+
  --Delete all records from table setteams
  DELETE TABLE setteams;
 

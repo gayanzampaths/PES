@@ -7,9 +7,25 @@ package Application;
 
 import Database.DbController;
 import Models.User;
+import java.awt.Desktop;
+import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 
 /**
  *
@@ -23,7 +39,7 @@ public class EmployeeDetails extends javax.swing.JFrame {
 
     /**
      * Creates new form EmployeeDetails
-     * @param user
+     * @param epf
      */
     public EmployeeDetails(String epf) {
         initComponents();
@@ -89,6 +105,7 @@ public class EmployeeDetails extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         editDetails = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        report = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -461,6 +478,14 @@ public class EmployeeDetails extends javax.swing.JFrame {
             }
         });
 
+        report.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        report.setText("Report");
+        report.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -477,11 +502,15 @@ public class EmployeeDetails extends javax.swing.JFrame {
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(editDetails, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton3))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(editDetails, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(report))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -501,7 +530,9 @@ public class EmployeeDetails extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(report))
                         .addGap(18, 18, 18)
                         .addComponent(editDetails)
                         .addGap(18, 18, 18)
@@ -520,7 +551,8 @@ public class EmployeeDetails extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setBounds(0, 0, 1016, 589);
+        setSize(new java.awt.Dimension(1016, 589));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
@@ -540,6 +572,41 @@ public class EmployeeDetails extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_editDetailsMouseClicked
+
+    private void reportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportMouseClicked
+        // TODO add your handling code here:
+        try {
+            JOptionPane.showMessageDialog(null,"Please wait");
+            
+            String reportName = "F:\\Developer_Portal\\Freelancing\\OnGoing\\PES\\src\\Reports\\EmployeeDetails";
+            
+            Map<String, Object> para = new HashMap<String, Object>();
+            para.put("epf",this.userd.getEpfNo());
+            JasperCompileManager.compileReport(reportName+".jrxml");  //compile the jrxml file
+            
+            FileOutputStream files= new FileOutputStream(reportName+".pdf"); //convert the jrxml file to pdf
+            
+            JasperPrint print=JasperFillManager.fillReport(reportName+".jasper", para,this.dbctrl.getConn()); 
+            
+            JRExporter exporter=new JRPdfExporter();
+            
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+            
+            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM,files);
+                                          
+            exporter.exportReport();    //export the report
+                        
+            JOptionPane.showMessageDialog(null,"report file saved successfuly");
+             
+            files.close();//close the covert pdf file
+            
+            File f=new File(reportName+".pdf");  //set the pdf file location
+            Desktop.getDesktop().open(f);   //open the relavent file
+        } catch (HeadlessException | IOException | JRException e) {
+            
+        }
+        
+    }//GEN-LAST:event_reportMouseClicked
 
     /**
      * @param args the command line arguments
@@ -623,6 +690,7 @@ public class EmployeeDetails extends javax.swing.JFrame {
     private javax.swing.JTextField nic;
     private javax.swing.JTextField num;
     private javax.swing.JTextField rel;
+    private javax.swing.JButton report;
     private javax.swing.JTextField street;
     private javax.swing.JTextField tp;
     // End of variables declaration//GEN-END:variables

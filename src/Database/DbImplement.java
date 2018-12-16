@@ -65,6 +65,10 @@ public class DbImplement implements DbInterface{
             return null;
         }
     }
+    
+    public Connection GetConn(){
+        return connection;
+    }
 
     @Override
     public void openConn() {
@@ -339,10 +343,99 @@ public class DbImplement implements DbInterface{
                 JOptionPane.showMessageDialog(null, e.getMessage(),"Duplication Warning!",JOptionPane.WARNING_MESSAGE);
                 return false;
             }else{
-                JOptionPane.showMessageDialog(null, "Registration Failed! check your data.", "Registration Failed!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Update failed! check your data.", "Registration Failed!", JOptionPane.ERROR_MESSAGE);
                 System.out.println(e);
                 return false;
             }
+        }
+    }
+
+    boolean ChangePassword(String epf, String ppwd, String npwd) {
+        try {
+            String findU = "SELECT * FROM users WHERE epfNo = '"+epf+"' AND password = '"+ppwd+"'";
+            PreparedStatement pst = this.connection.prepareStatement(findU);
+            ResultSet rst = pst.executeQuery();
+            if(rst.next()){
+                String update = "UPDATE users SET password = '"+npwd+"' WHERE epfNo = '"+epf+"' AND password = '"+ppwd+"'";
+                Statement statement = this.connection.createStatement();
+                statement.executeUpdate(update);
+                JOptionPane.showMessageDialog(null, "Update Complete!", "Done!", JOptionPane.PLAIN_MESSAGE);
+                return true;
+            }else{
+                JOptionPane.showMessageDialog(null, "User not found! check details again.", "Not Found!", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    User getUserData(String epf) {
+        try {
+            String sql = "SELECT * FROM userdata WHERE epfNo = '"+epf+"'";
+            PreparedStatement pst = this.connection.prepareStatement(sql);
+            ResultSet rst = pst.executeQuery();
+            User user = null;
+            if(rst.next()){
+                user = new User();
+                user.setDepartment(rst.getInt("department"));
+                user.setDesignation(rst.getInt("designation"));
+            }
+            return user;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    boolean updateEmployeeDetails(User user) {
+        try {
+            String sql = "UPDATE userdata SET department = '"+user.getDepartment()+"', designation = '"+user.getDesignation()+"' WHERE epfNo = '"+user.getEpfNo()+"'";
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(sql);
+            
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    boolean importCuttingDepEmp(Files f) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(f.getFilePath());
+            XSSFWorkbook wb = new XSSFWorkbook(fileInputStream);
+            XSSFSheet sheet = wb.getSheetAt(0);
+            Row row;
+            DataFormatter formatter = new DataFormatter();
+            
+            String err="";
+            
+            for (int i = 0; i <= sheet.getLastRowNum(); i++){
+                row = sheet.getRow(i);
+                String a = formatter.formatCellValue(row.getCell(0));
+                String b = formatter.formatCellValue(row.getCell(1));
+                
+                try {
+                    
+                    String sql = "INSERT INTO cuttingdepartmentemp (date, epfNo) VALUES(?,?)";
+                    PreparedStatement pstm = this.connection.prepareStatement(sql);
+
+                    pstm.setString(1, a);
+                    pstm.setString(2, b);
+
+                    pstm.executeUpdate();
+                    
+                } catch (SQLException e) {
+                    err+=(b+",");
+                }
+            }
+            if(!err.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Following Records Already Exists! Check the Spredsheet File. "+err+" None Duplication Records Uploaded!","Duplication Detect!",JOptionPane.ERROR_MESSAGE);
+            }else{
+                System.out.println("Done!");
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
     

@@ -9,6 +9,7 @@ import Models.Attendence;
 import Models.Files;
 import Models.TeamsData;
 import Models.User;
+import java.sql.Connection;
 
 /**
  *
@@ -73,5 +74,25 @@ public class DbController {
 
     public boolean UpdateDetails(User userd) {
         return this.dbimpl.UpdateDetails(userd);
+    }
+    
+    public Connection getConn(){
+        return this.dbimpl.GetConn();
+    }
+
+    public boolean ChangePassword(String epf, String ppwd, String npwd) {
+        return this.dbimpl.ChangePassword(epf,ppwd,npwd);
+    }
+
+    public User getUserData(String epf) {
+        return this.dbimpl.getUserData(epf);
+    }
+
+    public boolean updateEmployeeDetails(User user) {
+        return this.dbimpl.updateEmployeeDetails(user);
+    }
+
+    public boolean importCuttingDepEmp(Files f) {
+        return this.dbimpl.importCuttingDepEmp(f);
     }
 }

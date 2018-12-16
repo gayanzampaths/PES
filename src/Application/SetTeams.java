@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -38,6 +39,8 @@ public class SetTeams extends javax.swing.JFrame {
     public SetTeams() {
         initComponents();
         this.dbctrl = DbController.getController();
+        
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
     }
 
     /**
@@ -341,7 +344,7 @@ public class SetTeams extends javax.swing.JFrame {
                 //System.out.println(date);
                 
                 if(this.dbctrl.importTeams(f,date)){
-                    JOptionPane.showMessageDialog(null, "Attendence Detail File is Successfully Uploaded!","Upload Complete",JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Production Department Employee Assign File is Successfully Uploaded!","Upload Complete",JOptionPane.PLAIN_MESSAGE);
                     this.filePath.setText("Select File");
                 }
             }else{
