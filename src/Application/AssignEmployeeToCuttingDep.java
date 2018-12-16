@@ -111,6 +111,7 @@ public class AssignEmployeeToCuttingDep extends javax.swing.JFrame {
 
         jLabel3.setText("Select File:");
 
+        filePath.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         filePath.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 filePathMouseClicked(evt);

@@ -5,6 +5,8 @@
  */
 package Charts;
 
+import Models.Efficiency;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -18,12 +20,12 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public class CuttingDepartmentEfficiency extends JFrame{
     
-    public CuttingDepartmentEfficiency( String applicationTitle , String chartTitle ) {
+    public CuttingDepartmentEfficiency( String applicationTitle , String chartTitle, ArrayList<Efficiency> eff ) {
       super(applicationTitle);
       JFreeChart lineChart = ChartFactory.createLineChart(
         chartTitle,
         "Date","Efficiency",
-        createDataset(),
+        createDataset(eff),
         PlotOrientation.VERTICAL,
         true,true,false);
          
@@ -32,14 +34,17 @@ public class CuttingDepartmentEfficiency extends JFrame{
         setContentPane( chartPanel );
     }
     
-    private DefaultCategoryDataset createDataset( ) {
+    private DefaultCategoryDataset createDataset( ArrayList<Efficiency> eff ) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-        dataset.addValue( 90 , "Cutting Efficiency" , "2018-09-11" );
-        dataset.addValue( 30 , "Cutting Efficiency" , "2018-09-12" );
-        dataset.addValue( 60 , "Cutting Efficiency" ,  "2018-09-13" );
-        dataset.addValue( 20 , "Cutting Efficiency" , "2018-09-14" );
-        dataset.addValue( 40 , "Cutting Efficiency" , "2018-09-15" );
-        dataset.addValue( 85 , "Cutting Efficiency" , "2018-09-16" );
+        for(int i=0; i< eff.size(); i++){
+            dataset.addValue(eff.get(i).getEff(),"Cutting Efficiency" , eff.get(i).getDate());
+        }
+//        dataset.addValue( 90 , "Cutting Efficiency" , "2018-09-11" );
+//        dataset.addValue( 30 , "Cutting Efficiency" , "2018-09-12" );
+//        dataset.addValue( 60 , "Cutting Efficiency" ,  "2018-09-13" );
+//        dataset.addValue( 20 , "Cutting Efficiency" , "2018-09-14" );
+//        dataset.addValue( 40 , "Cutting Efficiency" , "2018-09-15" );
+//        dataset.addValue( 85 , "Cutting Efficiency" , "2018-09-16" );
         return dataset;
     }
 }

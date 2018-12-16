@@ -6,6 +6,7 @@
 package Database;
 
 import Models.Attendence;
+import Models.Efficiency;
 import Models.Files;
 import Models.TeamsData;
 import Models.User;
@@ -416,14 +417,19 @@ public class DbImplement implements DbInterface{
                 
                 try {
                     
-                    String sql = "INSERT INTO cuttingdepartmentemp (date, epfNo) VALUES(?,?)";
-                    PreparedStatement pstm = this.connection.prepareStatement(sql);
+                    String cuttingEmp = "INSERT INTO cuttingdepartmentemp (date, epfNo) VALUES(?,?)";
+                    String cuttingEff = "INSERT INTO cuttingefficiency (date, epfNo) VALUES(?,?)";
+                    PreparedStatement pstmEmp = this.connection.prepareStatement(cuttingEmp);
+                    PreparedStatement pstmEff = this.connection.prepareStatement(cuttingEff);
 
-                    pstm.setString(1, a);
-                    pstm.setString(2, b);
-
-                    pstm.executeUpdate();
+                    pstmEmp.setString(1, a);
+                    pstmEmp.setString(2, b);
                     
+                    pstmEff.setString(1, a);
+                    pstmEff.setString(2, b);
+
+                    pstmEmp.executeUpdate();
+                    pstmEff.executeUpdate();
                 } catch (SQLException e) {
                     err+=(b+",");
                 }
@@ -436,6 +442,55 @@ public class DbImplement implements DbInterface{
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    ArrayList<Efficiency> getCuttingEff(String epf) {
+        try {
+            String query = "SELECT * FROM cuttingefficiency WHERE epfNo = '"+epf+"'";
+            PreparedStatement pst = this.connection.prepareStatement(query);
+            ResultSet rst = pst.executeQuery();
+            ArrayList<Efficiency> efficiencys = new ArrayList<>();
+            Efficiency efficiency = null;
+            while(rst.next()){
+                efficiency = new Efficiency();
+                efficiency.setDate(rst.getString("date"));
+                efficiency.setEff(rst.getDouble("efficiency"));
+                efficiencys.add(efficiency);
+            }
+            if(efficiencys.isEmpty()){
+                return null;
+            }
+            return efficiencys;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Employee Not Found!", "Not Found!", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    boolean setEff(Efficiency efficiency) {
+        try {
+            String sql = "UPDATE cuttingefficiency SET supervisor = '"+efficiency.getSupervisor()+"', target = '" + efficiency.getTarget() + "', actual = '" + efficiency.getActual() + "', efficiency = '" + efficiency.getEff() + "' WHERE epfNo = '"+ efficiency.getEpfNo()+"' AND date = '"+efficiency.getDate()+"'";
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    ArrayList<String> getCuttingSupervisors() {
+        try {
+            String sql = "SELECT epfNo FROM userdata WHERE designation = '8'";
+            PreparedStatement pst = this.connection.prepareStatement(sql);
+            ResultSet rst = pst.executeQuery();
+            ArrayList<String> sup = new ArrayList<>();
+            while(rst.next()){
+                sup.add(rst.getString("epfNo"));
+            }
+            return sup;
+        } catch (SQLException e) {
+            return null;
         }
     }
     

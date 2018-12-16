@@ -6,10 +6,12 @@
 package Database;
 
 import Models.Attendence;
+import Models.Efficiency;
 import Models.Files;
 import Models.TeamsData;
 import Models.User;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  *
@@ -94,5 +96,17 @@ public class DbController {
 
     public boolean importCuttingDepEmp(Files f) {
         return this.dbimpl.importCuttingDepEmp(f);
+    }
+
+    public ArrayList<Efficiency> getCuttingEff(String epf) {
+        return this.dbimpl.getCuttingEff(epf);
+    }
+
+    public boolean setEff(Efficiency efficiency) {
+        return this.dbimpl.setEff(efficiency);
+    }
+
+    public ArrayList<String> getCuttingSupervisors() {
+        return this.dbimpl.getCuttingSupervisors();
     }
 }

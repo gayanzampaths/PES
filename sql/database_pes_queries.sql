@@ -23,6 +23,18 @@
  ENGINE = InnoDB
  CHARACTER SET = utf8;
 
+--Create table cuttingefficiency
+ CREATE TABLE cuttingefficiency (date date NOT NULL,
+ 	epfNo varchar(10) NOT NULL,
+ 	supervisor varchar(20),
+ 	target varchar(10),
+ 	actual varchar(10),
+ 	efficiency varchar(10),
+ 	PRIMARY KEY (date, epfNo),
+ 	CONSTRAINT fk_cuttingeff FOREIGN KEY (date, epfNo) REFERENCES cuttingdepartmentemp(date, epfNo) ON UPDATE CASCADE)
+ ENGINE = InnoDB
+ CHARACTER SET = utf8;
+
 --Create cuttingdepartmentemp one to one with attendance
  CREATE TABLE cuttingdepartmentemp(date date NOT NULL,
  	epfNo varchar(10) NOT NULL,

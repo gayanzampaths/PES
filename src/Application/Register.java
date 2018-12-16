@@ -52,7 +52,7 @@ public class Register extends javax.swing.JFrame {
         pwd = new javax.swing.JPasswordField();
         cpwd = new javax.swing.JPasswordField();
         close = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cls = new javax.swing.JButton();
         register = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         depart = new javax.swing.JComboBox<>();
@@ -133,8 +133,13 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jButton2.setText("Clear All");
+        cls.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        cls.setText("Clear All");
+        cls.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clsMouseClicked(evt);
+            }
+        });
 
         register.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         register.setText("Register");
@@ -163,7 +168,7 @@ public class Register extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(register)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)
+                                .addComponent(cls)
                                 .addGap(18, 18, 18)
                                 .addComponent(close))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -193,7 +198,7 @@ public class Register extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addGap(50, 50, 50)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(epfno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -220,9 +225,9 @@ public class Register extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(close)
-                    .addComponent(jButton2)
+                    .addComponent(cls)
                     .addComponent(register))
-                .addContainerGap())
+                .addGap(33, 33, 33))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -264,6 +269,16 @@ public class Register extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_closeMouseClicked
 
+    private void clsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clsMouseClicked
+        // TODO add your handling code here:
+        this.epfno.setText("");
+        this.username.setText("");
+        this.pwd.setText("");
+        this.cpwd.setText("");
+        this.desig.setSelectedIndex(0);
+        this.depart.setSelectedIndex(0);
+    }//GEN-LAST:event_clsMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -301,11 +316,11 @@ public class Register extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton close;
+    private javax.swing.JButton cls;
     private javax.swing.JPasswordField cpwd;
     private javax.swing.JComboBox<String> depart;
     private javax.swing.JComboBox<String> desig;
     private javax.swing.JTextField epfno;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
