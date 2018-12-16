@@ -5,6 +5,7 @@
  */
 package Charts;
 
+import Models.Defect;
 import Models.Efficiency;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -18,14 +19,14 @@ import org.jfree.data.category.DefaultCategoryDataset;
  *
  * @author gayan
  */
-public class CuttingDepartmentEfficiency extends JFrame{
+public class CuttingDepartmentDefects extends JFrame{
     
-    public CuttingDepartmentEfficiency( String applicationTitle , String chartTitle, ArrayList<Efficiency> eff ) {
+    public CuttingDepartmentDefects( String applicationTitle , String chartTitle, ArrayList<Defect> def ) {
       super(applicationTitle);
       JFreeChart lineChart = ChartFactory.createLineChart(
         chartTitle,
-        "Date","Efficiency",
-        createDataset(eff),
+        "Date","Defect Rate",
+        createDataset(def),
         PlotOrientation.VERTICAL,
         true,true,false);
          
@@ -34,10 +35,10 @@ public class CuttingDepartmentEfficiency extends JFrame{
         setContentPane( chartPanel );
     }
     
-    private DefaultCategoryDataset createDataset( ArrayList<Efficiency> eff ) {
+    private DefaultCategoryDataset createDataset( ArrayList<Defect> def ) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-        for(int i=0; i< eff.size(); i++){
-            dataset.addValue(eff.get(i).getEff(),"Cutting Efficiency" , eff.get(i).getDate());
+        for(int i=0; i< def.size(); i++){
+            dataset.addValue(def.get(i).getDefectRate(),"Cutting Defects" , def.get(i).getData());
         }
         return dataset;
     }

@@ -6,6 +6,7 @@
 package Database;
 
 import Models.Attendence;
+import Models.Defect;
 import Models.Efficiency;
 import Models.Files;
 import Models.TeamsData;
@@ -108,5 +109,13 @@ public class DbController {
 
     public ArrayList<String> getCuttingSupervisors() {
         return this.dbimpl.getCuttingSupervisors();
+    }
+
+    public ArrayList<Defect> getCuttingDef(String epf) {
+        return this.dbimpl.getCuttingDef(epf);
+    }
+
+    public boolean setDef(Defect defect) {
+        return this.dbimpl.setDef(defect);
     }
 }

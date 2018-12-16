@@ -35,6 +35,18 @@
  ENGINE = InnoDB
  CHARACTER SET = utf8;
 
+ --Create table cuttingdefects
+ CREATE TABLE cuttingdefects (date date NOT NULL,
+ 	epfNo varchar(10) NOT NULL,
+ 	supervisor varchar(20),
+ 	sample varchar(10),
+ 	defect varchar(10),
+ 	defectRate varchar(10),
+ 	PRIMARY KEY (date, epfNo),
+ 	CONSTRAINT fk_cuttingdef FOREIGN KEY (date, epfNo) REFERENCES cuttingdepartmentemp(date, epfNo) ON UPDATE CASCADE)
+ ENGINE = InnoDB
+ CHARACTER SET = utf8;
+
 --Create cuttingdepartmentemp one to one with attendance
  CREATE TABLE cuttingdepartmentemp(date date NOT NULL,
  	epfNo varchar(10) NOT NULL,

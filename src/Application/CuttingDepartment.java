@@ -5,8 +5,10 @@
  */
 package Application;
 
+import Charts.CuttingDepartmentDefects;
 import Charts.CuttingDepartmentEfficiency;
 import Database.DbController;
+import Models.Defect;
 import Models.Efficiency;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,8 +25,11 @@ public class CuttingDepartment extends javax.swing.JFrame {
     private final DbController dbctrl;
     
     private double Effici;
+    private double DefectR;
     
     ArrayList<Efficiency> efficiency = new ArrayList<>();
+    
+    ArrayList<Defect> defects = new ArrayList<>();
 
     /**
      * Creates new form CuttingDepartment
@@ -70,13 +75,33 @@ public class CuttingDepartment extends javax.swing.JFrame {
         epf = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         getEMP = new javax.swing.JButton();
+        plot = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         showEff = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        showDef = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        epf1 = new javax.swing.JTextField();
+        getEMP1 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        sup1 = new javax.swing.JComboBox<>();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        sample = new javax.swing.JTextField();
+        defect = new javax.swing.JTextField();
+        CalcDef = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        date1 = new com.toedter.calendar.JDateChooser();
+        jLabel15 = new javax.swing.JLabel();
+        def = new javax.swing.JTextField();
+        save1 = new javax.swing.JButton();
+        cls1 = new javax.swing.JButton();
+        plot1 = new javax.swing.JButton();
         close = new javax.swing.JButton();
-        plot = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -248,6 +273,14 @@ public class CuttingDepartment extends javax.swing.JFrame {
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
+        plot.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        plot.setText("Plot Efficiency Chart");
+        plot.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                plotMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -255,25 +288,26 @@ public class CuttingDepartment extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(24, 24, 24)
-                                        .addComponent(sup, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(eff, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(86, 86, 86)))
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(eff, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(86, 86, 86)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cls, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(save, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(save, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(24, 24, 24)
+                                .addComponent(sup, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(plot)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -294,6 +328,8 @@ public class CuttingDepartment extends javax.swing.JFrame {
                             .addComponent(jLabel8)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(plot)
+                        .addGap(18, 18, 18)
                         .addComponent(cls)
                         .addGap(18, 18, 18)
                         .addComponent(save)))
@@ -338,34 +374,216 @@ public class CuttingDepartment extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        showDef.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Date", "Defect Rate"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(showDef);
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Employee Defec Rate"));
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Get Employee"));
+
+        jLabel10.setText("EPF No.:");
+
+        getEMP1.setText("Get Employee");
+        getEMP1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                getEMP1MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addGap(18, 18, 18)
+                .addComponent(epf1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(getEMP1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(epf1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(getEMP1))
+                .addGap(0, 13, Short.MAX_VALUE))
+        );
+
+        jLabel11.setText("Supervisor:");
+
+        sup1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Supervisor" }));
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Calculate Defect Rate", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 12))); // NOI18N
+
+        jLabel12.setText("Sample Size (Units) :");
+
+        jLabel13.setText("Defects (Units) :");
+
+        CalcDef.setText("Calculate Defect Rate");
+        CalcDef.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CalcDefMouseClicked(evt);
+            }
+        });
+
+        jLabel14.setText("Date :");
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(defect, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(sample, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                        .addComponent(date1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(47, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CalcDef)
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(date1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(sample, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(defect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(CalcDef)
+                .addGap(6, 6, 6))
+        );
+
+        jLabel15.setText("Efficiency (%) :");
+
+        def.setEditable(false);
+
+        save1.setText("Save");
+        save1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                save1MouseClicked(evt);
+            }
+        });
+
+        cls1.setText("Clear All");
+        cls1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cls1MouseClicked(evt);
+            }
+        });
+
+        plot1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        plot1.setText("Plot Efficiency Chart");
+        plot1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                plot1MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(61, 61, 61)
+                                .addComponent(def, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(save1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cls1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(plot1, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(24, 24, 24)
+                                .addComponent(sup1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sup1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(plot1)
+                        .addGap(26, 26, 26)
+                        .addComponent(cls1)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(def, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(save1)))
+                .addGap(17, 17, 17))
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(756, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73))
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(105, 105, 105)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Defect Rate", jPanel4);
@@ -378,23 +596,13 @@ public class CuttingDepartment extends javax.swing.JFrame {
             }
         });
 
-        plot.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        plot.setText("Plot Efficiency Chart");
-        plot.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                plotMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(plot)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(close)
                 .addContainerGap())
             .addComponent(jTabbedPane1)
@@ -406,9 +614,7 @@ public class CuttingDepartment extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(close)
-                    .addComponent(plot))
+                .addComponent(close)
                 .addContainerGap())
         );
 
@@ -482,6 +688,56 @@ public class CuttingDepartment extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_saveMouseClicked
 
+    private void getEMP1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_getEMP1MouseClicked
+        // TODO add your handling code here:
+        loadDefectData();
+    }//GEN-LAST:event_getEMP1MouseClicked
+
+    private void CalcDefMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalcDefMouseClicked
+        // TODO add your handling code here:
+        DefectR = (Integer.parseInt(defect.getText()))*100 / Integer.parseInt(sample.getText());
+        this.def.setText(Double.toString(DefectR)+" %");
+    }//GEN-LAST:event_CalcDefMouseClicked
+
+    private void save1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_save1MouseClicked
+        // TODO add your handling code here:
+        if(validateFields2()){
+            Defect defect = new Defect();
+            defect.setEpf(this.epf1.getText());
+            defect.setSupervisor(this.sup1.getSelectedItem().toString());
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+            String datePic = sdf.format(this.date1.getDate());
+            
+            defect.setData(datePic);
+            defect.setSample(Integer.parseInt(this.sample.getText()));
+            defect.setDefect(Integer.parseInt(this.defect.getText()));
+            
+            defect.setDefectRate(this.DefectR);
+            
+            if(this.dbctrl.setDef(defect)){
+                JOptionPane.showMessageDialog(null, "Data Saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                loadDefectData();
+                ClearDefAll();
+            }else{
+                JOptionPane.showMessageDialog(null, "Something went wrong! Check your data!", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_save1MouseClicked
+
+    private void cls1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cls1MouseClicked
+        // TODO add your handling code here:
+        ClearDefAll();
+    }//GEN-LAST:event_cls1MouseClicked
+
+    private void plot1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plot1MouseClicked
+        // TODO add your handling code here:
+        CuttingDepartmentDefects cDef = new CuttingDepartmentDefects("Cutting Department Efficiency" ,"Efficiency vs Date", defects );
+        cDef.pack( );
+        RefineryUtilities.centerFrameOnScreen( cDef );
+        cDef.setVisible( true );
+    }//GEN-LAST:event_plot1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -518,15 +774,28 @@ public class CuttingDepartment extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CalcDef;
     private javax.swing.JTextField act;
     private javax.swing.JButton calc;
     private javax.swing.JButton close;
     private javax.swing.JButton cls;
+    private javax.swing.JButton cls1;
     private com.toedter.calendar.JDateChooser date;
+    private com.toedter.calendar.JDateChooser date1;
+    private javax.swing.JTextField def;
+    private javax.swing.JTextField defect;
     private javax.swing.JTextField eff;
     private javax.swing.JTextField epf;
+    private javax.swing.JTextField epf1;
     private javax.swing.JButton getEMP;
+    private javax.swing.JButton getEMP1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -536,20 +805,27 @@ public class CuttingDepartment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JButton plot;
+    private javax.swing.JButton plot1;
+    private javax.swing.JTextField sample;
     private javax.swing.JButton save;
+    private javax.swing.JButton save1;
+    private javax.swing.JTable showDef;
     private javax.swing.JTable showEff;
     private javax.swing.JComboBox<String> sup;
+    private javax.swing.JComboBox<String> sup1;
     private javax.swing.JTextField tar;
     // End of variables declaration//GEN-END:variables
 
@@ -561,11 +837,31 @@ public class CuttingDepartment extends javax.swing.JFrame {
         this.eff.setText(null);
     }
     
+    private void ClearDefAll() {
+//        this.epf.setText(null);
+        this.sup1.setSelectedIndex(0);
+        this.sample.setText(null);
+        this.defect.setText(null);
+        this.def.setText(null);
+    }
+    
     private boolean validateFields(){
         if(this.epf.getText().isEmpty() || this.sup.getSelectedIndex()==0 || this.date.getDate() == null || this.act.getText().isEmpty() || this.tar.getText().isEmpty() ){
             JOptionPane.showMessageDialog(null, "Please fill all required fields before saving!", "Empty Fields", JOptionPane.WARNING_MESSAGE);
             return false;
         } else if(this.eff.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please calculate efficiency before saving!", "Empty Fields", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
+    private boolean validateFields2(){
+        if(this.epf1.getText().isEmpty() || this.sup1.getSelectedIndex()==0 || this.date1.getDate() == null || this.sample.getText().isEmpty() || this.defect.getText().isEmpty() ){
+            JOptionPane.showMessageDialog(null, "Please fill all required fields before saving!", "Empty Fields", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else if(this.def.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Please calculate efficiency before saving!", "Empty Fields", JOptionPane.WARNING_MESSAGE);
             return false;
         }else{
@@ -594,6 +890,24 @@ public class CuttingDepartment extends javax.swing.JFrame {
         ArrayList<String> cuttingSup = this.dbctrl.getCuttingSupervisors();
         for(int i=0; i<cuttingSup.size(); i++){
             sup.addItem(cuttingSup.get(i));
+            sup1.addItem(cuttingSup.get(i));
+        }
+    }
+
+    private void loadDefectData() {
+        if(this.epf1.getText()!=null){
+            defects = this.dbctrl.getCuttingDef(this.epf1.getText());
+            if(defects!=null){
+                DefaultTableModel model = (DefaultTableModel) showDef.getModel();
+                model.setRowCount(0);
+                for(int i=0; i< defects.size(); i++){
+                   model.addRow(new Object[]{defects.get(i).getData(), defects.get(i).getDefectRate()}); 
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "No Records Found!", "Empty", JOptionPane.WARNING_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Please enter EPF Number First!", "Error!", JOptionPane.WARNING_MESSAGE);
         }
     }
 }

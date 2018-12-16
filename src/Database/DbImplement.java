@@ -6,6 +6,7 @@
 package Database;
 
 import Models.Attendence;
+import Models.Defect;
 import Models.Efficiency;
 import Models.Files;
 import Models.TeamsData;
@@ -419,17 +420,23 @@ public class DbImplement implements DbInterface{
                     
                     String cuttingEmp = "INSERT INTO cuttingdepartmentemp (date, epfNo) VALUES(?,?)";
                     String cuttingEff = "INSERT INTO cuttingefficiency (date, epfNo) VALUES(?,?)";
+                    String cuttingDef = "INSERT INTO cuttingdefects (date, epfNo) VALUES(?,?)";
                     PreparedStatement pstmEmp = this.connection.prepareStatement(cuttingEmp);
                     PreparedStatement pstmEff = this.connection.prepareStatement(cuttingEff);
+                    PreparedStatement pstmDef = this.connection.prepareStatement(cuttingDef);
 
                     pstmEmp.setString(1, a);
                     pstmEmp.setString(2, b);
                     
                     pstmEff.setString(1, a);
                     pstmEff.setString(2, b);
+                    
+                    pstmDef.setString(1, a);
+                    pstmDef.setString(2, b);
 
                     pstmEmp.executeUpdate();
                     pstmEff.executeUpdate();
+                    pstmDef.executeUpdate();
                 } catch (SQLException e) {
                     err+=(b+",");
                 }
@@ -491,6 +498,40 @@ public class DbImplement implements DbInterface{
             return sup;
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    ArrayList<Defect> getCuttingDef(String epf) {
+        try {
+            String query = "SELECT * FROM cuttingdefects WHERE epfNo = '"+epf+"'";
+            PreparedStatement pst = this.connection.prepareStatement(query);
+            ResultSet rst = pst.executeQuery();
+            ArrayList<Defect> defects = new ArrayList<>();
+            Defect defect = null;
+            while(rst.next()){
+                defect = new Defect();
+                defect.setData(rst.getString("date"));
+                defect.setDefectRate(rst.getDouble("defectRate"));
+                defects.add(defect);
+            }
+            if(defects.isEmpty()){
+                return null;
+            }
+            return defects;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Employee Not Found!", "Not Found!", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    boolean setDef(Defect defect) {
+        try {
+            String sql = "UPDATE cuttingdefects SET supervisor = '"+defect.getSupervisor()+"', sample  = '" + defect.getSample()+ "', defect = '" + defect.getDefect()+ "', defectRate = '" + defect.getDefectRate()+ "' WHERE epfNo = '"+ defect.getEpf()+"' AND date = '"+defect.getData()+"'";
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            return false;
         }
     }
     
