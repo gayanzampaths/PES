@@ -17,6 +17,7 @@ public class Defect {
     private int sample;
     private int defect;
     private String supervisor;
+    private String team;
 
     /**
      * @return the epf
@@ -100,6 +101,20 @@ public class Defect {
      */
     public void setSupervisor(String supervisor) {
         this.supervisor = supervisor;
+    }
+
+    /**
+     * @return the team
+     */
+    public String getTeam() {
+        return team;
+    }
+
+    /**
+     * @param team the team to set
+     */
+    public void setTeam(String team) {
+        this.team = team;
     }
     
 }

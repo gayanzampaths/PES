@@ -35,6 +35,32 @@
  ENGINE = InnoDB
  CHARACTER SET = utf8;
 
+--Create table productionefficiency
+ CREATE TABLE productionefficiency (date date NOT NULL,
+ 	team varchar(10) NOT NULL,
+ 	supervisor varchar(10), NOT NULL,
+ 	smv varchar(10),
+ 	operators varchar(10),
+ 	outputs varchar(10),
+ 	hours varchar(10),
+ 	efficiency varchar(10),
+ 	PRIMARY KEY (date, team, supervisor),
+ 	CONSTRAINT fk_producteff FOREIGN KEY (date, team, supervisor) REFERENCES productionteamdata(date, team, supervisor) ON UPDATE CASCADE)
+ ENGINE = InnoDB
+ CHARACTER SET = utf8;
+
+ --Create table productiondefect
+ CREATE TABLE productiondefect (date date NOT NULL,
+ 	team varchar(10) NOT NULL,
+ 	supervisor varchar(10) NOT NULL,
+ 	sample varchar(10),
+ 	defect varchar(10),
+ 	defectRate varchar(10),
+ 	PRIMARY KEY (date, team, supervisor),
+ 	CONSTRAINT fk_productdef FOREIGN KEY (date, team, supervisor) REFERENCES productionteamdata(date, team, supervisor) ON UPDATE CASCADE)
+ ENGINE = InnoDB
+ CHARACTER SET = utf8;
+
  --Create table cuttingdefects
  CREATE TABLE cuttingdefects (date date NOT NULL,
  	epfNo varchar(10) NOT NULL,

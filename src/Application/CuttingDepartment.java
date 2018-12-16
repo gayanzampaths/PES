@@ -501,7 +501,7 @@ public class CuttingDepartment extends javax.swing.JFrame {
         });
 
         plot1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        plot1.setText("Plot Efficiency Chart");
+        plot1.setText("Plot Defect Chart");
         plot1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 plot1MouseClicked(evt);
@@ -578,7 +578,7 @@ public class CuttingDepartment extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 347, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
@@ -732,7 +732,7 @@ public class CuttingDepartment extends javax.swing.JFrame {
 
     private void plot1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plot1MouseClicked
         // TODO add your handling code here:
-        CuttingDepartmentDefects cDef = new CuttingDepartmentDefects("Cutting Department Efficiency" ,"Efficiency vs Date", defects );
+        CuttingDepartmentDefects cDef = new CuttingDepartmentDefects("Cutting Department Defect Rate" ,"Defect Rate vs Date", defects );
         cDef.pack( );
         RefineryUtilities.centerFrameOnScreen( cDef );
         cDef.setVisible( true );

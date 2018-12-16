@@ -5,17 +5,46 @@
  */
 package Application;
 
+import Charts.CuttingDepartmentDefects;
+import Charts.ProductionDepartmentDefects;
+import Charts.ProductionDepartmentEfficiency;
+import Database.DbController;
+import Models.Defect;
+import Models.Efficiency;
+import java.awt.EventQueue;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.jfree.ui.RefineryUtilities;
+
 /**
  *
  * @author gayan
  */
 public class ProductionDepartment extends javax.swing.JFrame {
+    
+    private final DbController dbctrl;
+    
+    ArrayList<String> teamList = new ArrayList<>();
+    
+    ArrayList<Efficiency> efficiencys = new ArrayList<>();
+    
+    ArrayList<Defect> defects = new ArrayList<>();
+    
+    private double efficiency;
+    
+    private double defect;
+    
+    DecimalFormat df = new DecimalFormat("#.00");
 
     /**
      * Creates new form ProductionDepartment
      */
     public ProductionDepartment() {
         initComponents();
+        this.dbctrl = DbController.getController();
     }
 
     /**
@@ -32,6 +61,60 @@ public class ProductionDepartment extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        effic = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        dateef = new com.toedter.calendar.JDateChooser();
+        DateSelect = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        teams = new javax.swing.JComboBox<>();
+        teamEff = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        sup = new javax.swing.JTextField();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        operators = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        smv = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        outputs = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        whours = new javax.swing.JTextField();
+        Calc = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        eff = new javax.swing.JTextField();
+        save = new javax.swing.JButton();
+        clear = new javax.swing.JButton();
+        plot = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        showDef = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        dateef1 = new com.toedter.calendar.JDateChooser();
+        DateSelect1 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        teams1 = new javax.swing.JComboBox<>();
+        teamEff1 = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        sample = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        def = new javax.swing.JTextField();
+        calcDef = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        defRate = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        supd = new javax.swing.JTextField();
+        saveDef = new javax.swing.JButton();
+        cls = new javax.swing.JButton();
+        plotDef = new javax.swing.JButton();
+        close = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -80,17 +163,494 @@ public class ProductionDepartment extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        effic.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Efficiency"
+            }
+        ));
+        jScrollPane1.setViewportView(effic);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Select Date"));
+
+        jLabel4.setText("Select Date :");
+
+        DateSelect.setText("Select Date");
+        DateSelect.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DateSelectMouseClicked(evt);
+            }
+        });
+
+        jLabel3.setText("Select Team :");
+
+        teams.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Team" }));
+
+        teamEff.setText("Team Efficiency");
+        teamEff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                teamEffMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(dateef, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(DateSelect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(teams, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(teamEff, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(DateSelect)
+                    .addComponent(dateef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(teams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(teamEff)))
+        );
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Team Efficiency"));
+
+        jLabel5.setText("Supervisor :");
+
+        sup.setEditable(false);
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Calculate Efficiency"));
+
+        jLabel7.setText("No. of Operators :");
+
+        operators.setEditable(false);
+
+        jLabel8.setText("SMV :");
+
+        jLabel9.setText("Product Outputs :");
+
+        jLabel10.setText("Working Hours :");
+
+        Calc.setText("Calculate");
+        Calc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CalcMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(outputs)
+                    .addComponent(operators)
+                    .addComponent(smv)
+                    .addComponent(whours, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Calc)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(operators, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(smv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(outputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(whours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Calc))
+                .addGap(0, 6, Short.MAX_VALUE))
+        );
+
+        jLabel11.setText("Efficiency :");
+
+        eff.setEditable(false);
+
+        save.setText("Save");
+        save.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveMouseClicked(evt);
+            }
+        });
+
+        clear.setText("Clear All");
+        clear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clearMouseClicked(evt);
+            }
+        });
+
+        plot.setText("Plot Efficiency Chart");
+        plot.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                plotMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sup)
+                            .addComponent(eff)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(plot)
+                        .addGap(18, 18, 18)
+                        .addComponent(clear)
+                        .addGap(18, 18, 18)
+                        .addComponent(save)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(eff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(sup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(save)
+                    .addComponent(clear)
+                    .addComponent(plot))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(1, 1, 1))
+        );
+
+        jTabbedPane1.addTab("Efficiency", jPanel3);
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        showDef.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Defect Rate"
+            }
+        ));
+        jScrollPane2.setViewportView(showDef);
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Select Date"));
+
+        jLabel12.setText("Select Date :");
+
+        DateSelect1.setText("Select Date");
+        DateSelect1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DateSelect1MouseClicked(evt);
+            }
+        });
+
+        jLabel13.setText("Select Team :");
+
+        teams1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Team" }));
+
+        teamEff1.setText("Team Efficiency");
+        teamEff1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                teamEff1MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(18, 18, 18)
+                        .addComponent(dateef1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(DateSelect1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(18, 18, 18)
+                        .addComponent(teams1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(teamEff1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(DateSelect1)
+                    .addComponent(dateef1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(teams1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(teamEff1)))
+        );
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Calculate Defect Rate"));
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Calculate Defect Rate"));
+
+        jLabel14.setText("Sample (Units) :");
+
+        jLabel15.setText("Defects (Unit) :");
+
+        calcDef.setText("Calculate Defect Rate");
+        calcDef.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcDefMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sample, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(def)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(calcDef)
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(sample, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(def, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(calcDef))
+                .addGap(0, 14, Short.MAX_VALUE))
+        );
+
+        jLabel16.setText("Defect Rate :");
+
+        defRate.setEditable(false);
+
+        jLabel17.setText("Supervisor :");
+
+        supd.setEditable(false);
+
+        saveDef.setText("Save");
+        saveDef.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveDefMouseClicked(evt);
+            }
+        });
+
+        cls.setText("Clear All");
+        cls.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clsMouseClicked(evt);
+            }
+        });
+
+        plotDef.setText("Plot Defect Rate Chart");
+        plotDef.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                plotDefMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(defRate)
+                            .addComponent(supd)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(plotDef)
+                        .addGap(18, 18, 18)
+                        .addComponent(cls)
+                        .addGap(18, 18, 18)
+                        .addComponent(saveDef)))
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(defRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(supd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveDef)
+                    .addComponent(cls)
+                    .addComponent(plotDef))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(121, 121, 121)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Defect Rate", jPanel4);
+
+        close.setText("Close");
+        close.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(close)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 448, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(close)
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -108,6 +668,144 @@ public class ProductionDepartment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_closeMouseClicked
+
+    private void teamEffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_teamEffMouseClicked
+        // TODO add your handling code here:
+        if(dateef.getDate()!=null & teams.getSelectedIndex() != 0){
+            loadEffData();
+        }else{
+            JOptionPane.showMessageDialog(null, "Select Date and Team First!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_teamEffMouseClicked
+
+    private void DateSelectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DateSelectMouseClicked
+        // TODO add your handling code here:
+        if(this.dateef.getDate()!= null){
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+            String datePic = sdf.format(this.dateef.getDate());
+            
+            teamList = this.dbctrl.getTeams(datePic);
+            
+            for(int i =0; i< teamList.size(); i++){
+                teams.addItem(teamList.get(i));
+            }
+        }
+    }//GEN-LAST:event_DateSelectMouseClicked
+
+    private void CalcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalcMouseClicked
+        // TODO add your handling code here:
+        efficiency = (Double.parseDouble(smv.getText())*Integer.parseInt(outputs.getText())*100)/(Integer.parseInt(operators.getText())*Double.parseDouble(whours.getText())*60);
+        eff.setText(df.format(efficiency)+" %");
+    }//GEN-LAST:event_CalcMouseClicked
+
+    private void saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveMouseClicked
+        // TODO add your handling code here:
+        if(validateEff()){
+            Efficiency efficiency = new Efficiency();
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+            String datePic = sdf.format(this.dateef.getDate());
+            
+            efficiency.setDate(datePic);
+            efficiency.setTeam(teams.getSelectedItem().toString());
+            efficiency.setOperators(Integer.parseInt(operators.getText()));
+            efficiency.setSmv(Double.parseDouble(smv.getText()));
+            efficiency.setOutputs(Integer.parseInt(outputs.getText()));
+            efficiency.setHours(Double.parseDouble(whours.getText()));
+            efficiency.setEff(this.efficiency);
+            efficiency.setSupervisor(sup.getText());
+            
+            if(this.dbctrl.saveProdEff(efficiency)){
+                JOptionPane.showMessageDialog(null, "Save Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                loadEffData();
+                clearAllEff();
+            }else{
+                JOptionPane.showMessageDialog(null, "Save Failed!", "Failed", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_saveMouseClicked
+
+    private void clearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearMouseClicked
+        // TODO add your handling code here:
+        clearAllEff();
+    }//GEN-LAST:event_clearMouseClicked
+
+    private void plotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plotMouseClicked
+        // TODO add your handling code here:
+        ProductionDepartmentEfficiency PDef = new ProductionDepartmentEfficiency("Production Department Efficiency" ,"Efficiency vs Date", efficiencys );
+        PDef.pack( );
+        RefineryUtilities.centerFrameOnScreen( PDef );
+        PDef.setVisible( true );
+    }//GEN-LAST:event_plotMouseClicked
+
+    private void DateSelect1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DateSelect1MouseClicked
+        // TODO add your handling code here:
+        if(this.dateef1.getDate()!= null){
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+            String datePic = sdf.format(this.dateef1.getDate());
+            
+            ArrayList<String> teamList1 = this.dbctrl.getTeams(datePic);
+            
+            for(int i =0; i< teamList1.size(); i++){
+                teams1.addItem(teamList1.get(i));
+            }
+        }
+    }//GEN-LAST:event_DateSelect1MouseClicked
+
+    private void teamEff1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_teamEff1MouseClicked
+        // TODO add your handling code here:
+        loadDefectData();
+    }//GEN-LAST:event_teamEff1MouseClicked
+
+    private void calcDefMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcDefMouseClicked
+        // TODO add your handling code here:
+        defect = Integer.parseInt(def.getText())*100/Integer.parseInt(sample.getText());
+        
+        defRate.setText(df.format(defect));
+    }//GEN-LAST:event_calcDefMouseClicked
+
+    private void clsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clsMouseClicked
+        // TODO add your handling code here:
+        clearDef();
+    }//GEN-LAST:event_clsMouseClicked
+
+    private void saveDefMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveDefMouseClicked
+        // TODO add your handling code here:
+        if(validateDef()){
+            Defect defect = new Defect();
+            defect.setSample(Integer.parseInt(sample.getText()));
+            defect.setDefect(Integer.parseInt(def.getText()));
+            defect.setDefectRate(this.defect);
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+            String datePic = sdf.format(this.dateef1.getDate());
+            
+            defect.setData(datePic);
+            defect.setTeam(teams1.getSelectedItem().toString());
+            
+            if(this.dbctrl.saveProdDef(defect)){
+                JOptionPane.showMessageDialog(null, "Save Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                loadDefectData();
+                clearDef();
+            }else{
+                JOptionPane.showMessageDialog(null, "Save Failed!", "Failed", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_saveDefMouseClicked
+
+    private void plotDefMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plotDefMouseClicked
+        // TODO add your handling code here:
+        ProductionDepartmentDefects cDef = new ProductionDepartmentDefects("Production Department Defect Rate" ,"Defect Rate vs Date", defects );
+        cDef.pack( );
+        RefineryUtilities.centerFrameOnScreen( cDef );
+        cDef.setVisible( true );
+    }//GEN-LAST:event_plotDefMouseClicked
+
+    
     /**
      * @param args the command line arguments
      */
@@ -144,10 +842,138 @@ public class ProductionDepartment extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Calc;
+    private javax.swing.JButton DateSelect;
+    private javax.swing.JButton DateSelect1;
+    private javax.swing.JButton calcDef;
+    private javax.swing.JButton clear;
+    private javax.swing.JButton close;
+    private javax.swing.JButton cls;
+    private com.toedter.calendar.JDateChooser dateef;
+    private com.toedter.calendar.JDateChooser dateef1;
+    private javax.swing.JTextField def;
+    private javax.swing.JTextField defRate;
+    private javax.swing.JTextField eff;
+    private javax.swing.JTable effic;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField operators;
+    private javax.swing.JTextField outputs;
+    private javax.swing.JButton plot;
+    private javax.swing.JButton plotDef;
+    private javax.swing.JTextField sample;
+    private javax.swing.JButton save;
+    private javax.swing.JButton saveDef;
+    private javax.swing.JTable showDef;
+    private javax.swing.JTextField smv;
+    private javax.swing.JTextField sup;
+    private javax.swing.JTextField supd;
+    private javax.swing.JButton teamEff;
+    private javax.swing.JButton teamEff1;
+    private javax.swing.JComboBox<String> teams;
+    private javax.swing.JComboBox<String> teams1;
+    private javax.swing.JTextField whours;
     // End of variables declaration//GEN-END:variables
+
+    private void loadEffData() {
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+        String datePic = sdf.format(this.dateef.getDate());
+            
+        efficiencys = this.dbctrl.getProdEff(datePic, teams.getSelectedItem().toString());
+        
+        if(efficiencys!=null){
+            this.operators.setText(Integer.toString(efficiencys.get(0).getOperators()));
+            this.sup.setText(efficiencys.get(0).getSupervisor());
+        
+            DefaultTableModel model = (DefaultTableModel) effic.getModel();
+            model.setRowCount(0);
+            for(int i=1; i< efficiencys.size(); i++){
+               model.addRow(new Object[]{efficiencys.get(i).getDate(), efficiencys.get(i).getEff()}); 
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "No Records Found!", "Empty", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    private void loadDefectData(){
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+        String datePic = sdf.format(this.dateef1.getDate());
+        
+        defects = this.dbctrl.getProdDef(datePic, teams1.getSelectedItem().toString());
+        
+        if(defects!=null){
+            this.supd.setText(defects.get(0).getSupervisor());
+            DefaultTableModel model = (DefaultTableModel) showDef.getModel();
+            model.setRowCount(0);
+            for(int i=1; i< defects.size(); i++){
+               model.addRow(new Object[]{defects.get(i).getData(), defects.get(i).getDefectRate()}); 
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "No Records Found!", "Empty", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private boolean validateEff() {
+        if(dateef.getDate()==null || teams.getSelectedIndex()==0 || operators.getText().isEmpty() || smv.getText().isEmpty() || outputs.getText().isEmpty() || whours.getText().isEmpty() || sup.getText().isEmpty() ){
+            JOptionPane.showMessageDialog(null, "Fill Required Fields First!", "Empty Fields", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }else if(eff.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please Calculate Efficiency First!", "Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    private void clearAllEff() {
+        this.smv.setText("");
+        this.operators.setText("");
+        this.whours.setText("");
+        this.eff.setText("");
+    }
+
+    private boolean validateDef() {
+        if(sample.getText().isEmpty() || def.getText().isEmpty() || dateef1.getDate()==null || teams1.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null, "Fill Required fields first", "Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }else if(defRate.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Calculate Defect Rate first", "Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    private void clearDef() {
+        this.sample.setText("");
+        this.def.setText("");
+    }
 }

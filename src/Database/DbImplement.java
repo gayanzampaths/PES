@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -149,18 +150,33 @@ public class DbImplement implements DbInterface{
             DataFormatter formatter = new DataFormatter();
             
             String notMatch="";
-            String sqlteam,sqlset;
+            String sqlteam,sqlset,sqlEff,sqlDef;
             
             for(int k=1; k<sheet.getRow(0).getLastCellNum(); k++){
                 try {
                     sqlteam = "INSERT INTO productionteamdata (date, team, supervisor) VALUES (?,?,?)";
+                    sqlEff = "INSERT INTO productionefficiency (date, team, supervisor) VALUES (?,?,?)";
+                    sqlDef = "INSERT INTO productiondefect (date, team, supervisor) VALUES (?,?,?)";
+                    
                     PreparedStatement pst = this.connection.prepareStatement(sqlteam);
+                    PreparedStatement pstEff = this.connection.prepareStatement(sqlEff);
+                    PreparedStatement pstDef = this.connection.prepareStatement(sqlDef);
                     
                     pst.setString(1, date);
                     pst.setString(2, formatter.formatCellValue(sheet.getRow(0).getCell(k)));
                     pst.setString(3, formatter.formatCellValue(sheet.getRow(1).getCell(k)));
                     
+                    pstEff.setString(1, date);
+                    pstEff.setString(2, formatter.formatCellValue(sheet.getRow(0).getCell(k)));
+                    pstEff.setString(3, formatter.formatCellValue(sheet.getRow(1).getCell(k)));
+                    
+                    pstDef.setString(1, date);
+                    pstDef.setString(2, formatter.formatCellValue(sheet.getRow(0).getCell(k)));
+                    pstDef.setString(3, formatter.formatCellValue(sheet.getRow(1).getCell(k)));
+                    
                     pst.executeUpdate();
+                    pstEff.executeUpdate();
+                    pstDef.executeUpdate();
                 } catch (SQLException e) {
                 }
             }
@@ -531,6 +547,111 @@ public class DbImplement implements DbInterface{
             statement.executeUpdate(sql);
             return true;
         } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    ArrayList<String> getTeams(String datePic) {
+        try {
+            String sql = "SELECT DISTINCT team FROM productionsetteams WHERE date = '"+datePic+"'";
+            PreparedStatement pst = this.connection.prepareStatement(sql);
+            ResultSet rst = pst.executeQuery();
+            ArrayList<String> teams = new ArrayList<>();
+            while(rst.next()){
+                teams.add(rst.getString("team"));
+            }
+            return teams;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    ArrayList<Efficiency> getProdEff(String datePic, String team) {
+        try {
+            String sql = "SELECT COUNT(epfNo) FROM productionsetteams WHERE date = '"+datePic+"' AND team = '"+team+"'";
+            PreparedStatement pst = this.connection.prepareStatement(sql);
+            ResultSet rst = pst.executeQuery();
+            ArrayList<Efficiency> efficiencys = new ArrayList<>();
+            Efficiency efficiency = new Efficiency();
+            
+            if(rst.next()){
+                efficiency.setOperators(rst.getInt(1));
+            }
+            
+            String getSup = "SELECT supervisor FROM productionteamdata WHERE date = '"+datePic+"' AND team = '"+team+"'";
+            PreparedStatement pstSup = this.connection.prepareStatement(getSup);
+            ResultSet rstSup = pstSup.executeQuery();
+            
+            if(rstSup.next()){
+                efficiency.setSupervisor(rstSup.getString("supervisor"));
+            }
+            efficiencys.add(efficiency);
+            
+            String getEff = "SELECT * FROM productionefficiency WHERE team = '"+team+"'";
+            PreparedStatement pstEff = this.connection.prepareStatement(getEff);
+            ResultSet rstEff = pstEff.executeQuery();
+            
+            while(rstEff.next()){
+                efficiency = new Efficiency();
+                efficiency.setDate(rstEff.getString("date"));
+                efficiency.setEff(rstEff.getDouble("efficiency"));
+                efficiencys.add(efficiency);
+            }
+            
+            return efficiencys;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    boolean saveProdEff(Efficiency efficiency) {
+        try {
+            DecimalFormat df = new DecimalFormat("#.00");
+            String sql = "UPDATE productionefficiency SET smv = '"+efficiency.getSmv()+"', operators = '"+efficiency.getOperators()+"', outputs = '"+efficiency.getOutputs()+"', hours = '"+efficiency.getHours()+"', efficiency = '"+df.format(efficiency.getEff())+"' WHERE date = '"+efficiency.getDate()+"' AND team = '"+efficiency.getTeam()+"'";
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    ArrayList<Defect> getProdDef(String datePic, String team) {
+        try {
+            String getSup = "SELECT supervisor FROM productionteamdata WHERE date = '"+datePic+"' AND team = '"+team+"'";
+            PreparedStatement pstSup = this.connection.prepareStatement(getSup);
+            ResultSet rstSup = pstSup.executeQuery();
+            ArrayList<Defect> defects = new ArrayList<>();
+            Defect defect = new Defect();
+            if(rstSup.next()){
+                defect.setSupervisor(rstSup.getString("supervisor"));
+            }
+            defects.add(defect);
+            
+            String getEff = "SELECT * FROM productiondefect WHERE team = '"+team+"'";
+            PreparedStatement pstEff = this.connection.prepareStatement(getEff);
+            ResultSet rstEff = pstEff.executeQuery();
+            
+            while(rstEff.next()){
+                defect = new Defect();
+                defect.setData(rstEff.getString("date"));
+                defect.setDefectRate(rstEff.getDouble("defectRate"));
+                defects.add(defect);
+            }
+            return defects;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    boolean saveProdDef(Defect defect) {
+        try {
+            DecimalFormat df = new DecimalFormat("#.00");
+            String sql = "UPDATE productiondefect SET sample = '"+defect.getSample()+"', defect = '"+defect.getDefect()+"', defectRate = '"+defect.getDefectRate()+"' WHERE date = '"+defect.getData()+"' AND team = '"+defect.getTeam()+"'";
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }

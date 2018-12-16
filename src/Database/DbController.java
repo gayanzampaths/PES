@@ -118,4 +118,24 @@ public class DbController {
     public boolean setDef(Defect defect) {
         return this.dbimpl.setDef(defect);
     }
+
+    public ArrayList<String> getTeams(String datePic) {
+        return this.dbimpl.getTeams(datePic);
+    }
+
+    public ArrayList<Efficiency> getProdEff(String datePic, String team) {
+        return this.dbimpl.getProdEff(datePic, team);
+    }
+
+    public boolean saveProdEff(Efficiency efficiency) {
+        return this.dbimpl.saveProdEff(efficiency);
+    }
+
+    public ArrayList<Defect> getProdDef(String datePic, String team) {
+        return this.dbimpl.getProdDef(datePic, team);
+    }
+
+    public boolean saveProdDef(Defect defect) {
+        return this.dbimpl.saveProdDef(defect);
+    }
 }
