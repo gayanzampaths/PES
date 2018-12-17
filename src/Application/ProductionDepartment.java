@@ -956,6 +956,7 @@ public class ProductionDepartment extends javax.swing.JFrame {
     private void clearAllEff() {
         this.smv.setText("");
         this.operators.setText("");
+        this.outputs.setText("");
         this.whours.setText("");
         this.eff.setText("");
     }

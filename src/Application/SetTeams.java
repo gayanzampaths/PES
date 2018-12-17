@@ -116,7 +116,7 @@ public class SetTeams extends javax.swing.JFrame {
         );
 
         jLayeredPane1.setBackground(new java.awt.Color(153, 255, 204));
-        jLayeredPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "View Team Set Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        jLayeredPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "View Team Set Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
         jLayeredPane1.setForeground(new java.awt.Color(0, 0, 0));
         jLayeredPane1.setOpaque(true);
 
@@ -148,18 +148,16 @@ public class SetTeams extends javax.swing.JFrame {
         );
 
         jLayeredPane2.setBackground(new java.awt.Color(153, 255, 204));
-        jLayeredPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Import Team Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        jLayeredPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Import Team Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
         jLayeredPane2.setForeground(new java.awt.Color(153, 255, 204));
         jLayeredPane2.setOpaque(true);
 
         jLabel3.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Select Date :");
 
         datePick.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Import Spred Sheet :");
 
         filePath.setEditable(false);
@@ -212,7 +210,7 @@ public class SetTeams extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(viewData)))
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jLayeredPane2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
@@ -220,7 +218,12 @@ public class SetTeams extends javax.swing.JFrame {
         );
 
         jButton1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jButton1.setText("Back");
+        jButton1.setText("Close");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         upload.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         upload.setText("Upload To Database");
@@ -354,6 +357,11 @@ public class SetTeams extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please set Date First!", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_uploadMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments

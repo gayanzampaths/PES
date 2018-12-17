@@ -9,6 +9,7 @@ import Models.Attendence;
 import Models.Defect;
 import Models.Efficiency;
 import Models.Files;
+import Models.LoadData;
 import Models.TeamsData;
 import Models.User;
 import java.io.FileInputStream;
@@ -58,6 +59,7 @@ public class DbImplement implements DbInterface{
             if(rst.next()){
                 user = new User();
                 user.setEpfNo(rst.getString("epfNo"));
+                user.setDesignation(rst.getInt("desig"));
             }
             pst.close();
             rst.close();
@@ -219,7 +221,7 @@ public class DbImplement implements DbInterface{
     @Override
     public boolean register(User user) {
         try {
-            String sqluser = "INSERT INTO users VALUES (?,?,?)";
+            String sqluser = "INSERT INTO users VALUES (?,?,?,?)";
             String sqldata = "INSERT INTO userdata (epfNo,department,designation,joinDate) VALUES (?,?,?,?)";
             
             PreparedStatement pstUser = this.connection.prepareStatement(sqluser);
@@ -228,6 +230,7 @@ public class DbImplement implements DbInterface{
             pstUser.setString(1, user.getEpfNo());
             pstUser.setString(2, user.getUsername());
             pstUser.setString(3, user.getPassword());
+            pstUser.setInt(4, user.getDesignation());
             
             pstData.setString(1, user.getEpfNo());
             pstData.setInt(2, user.getDepartment());
@@ -653,6 +656,62 @@ public class DbImplement implements DbInterface{
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    ArrayList<LoadData> loadData(String d) {
+        try {
+            String cutEff = "SELECT SUM(efficiency), COUNT(DISTINCT date) FROM cuttingefficiency WHERE date LIKE '"+d+"'";
+            String cutDef = "SELECT SUM(defectRate), COUNT(DISTINCT date) FROM cuttingdefects WHERE date LIKE '"+d+"'";
+            String prodEff = "SELECT SUM(efficiency), COUNT(DISTINCT date) FROM productionefficiency WHERE date LIKE '"+d+"'";
+            String ProdDef = "SELECT SUM(defectRate), COUNT(DISTINCT date) FROM productiondefect WHERE date LIKE '"+d+"'";
+            
+            ArrayList<LoadData> loadDatas = new ArrayList<>();
+            
+            PreparedStatement cutEffP = this.connection.prepareStatement(cutEff);
+            ResultSet cutEffR = cutEffP.executeQuery();
+            LoadData loadData = null;
+            if(cutEffR.next()){
+                loadData = new LoadData();
+                loadData.setValue(cutEffR.getDouble(1));
+                loadData.setCount(cutEffR.getInt(2));
+                loadDatas.add(loadData);
+            }
+            
+            PreparedStatement cutDefP = this.connection.prepareStatement(cutDef);
+            ResultSet cutDefR = cutDefP.executeQuery();
+            if(cutDefR.next()){
+                loadData = new LoadData();
+                loadData.setValue(cutDefR.getDouble(1));
+                loadData.setCount(cutDefR.getInt(2));
+                loadDatas.add(loadData);
+            }
+            
+            PreparedStatement prodEffP = this.connection.prepareStatement(prodEff);
+            ResultSet prodEffR = prodEffP.executeQuery();
+            if(prodEffR.next()){
+                loadData = new LoadData();
+                loadData.setValue(prodEffR.getDouble(1));
+                loadData.setCount(prodEffR.getInt(2));
+                loadDatas.add(loadData);
+            }
+            
+            PreparedStatement ProdDefP = this.connection.prepareStatement(ProdDef);
+            ResultSet ProdDefR = ProdDefP.executeQuery();
+            if(ProdDefR.next()){
+                loadData = new LoadData();
+                loadData.setValue(ProdDefR.getDouble(1));
+                loadData.setCount(ProdDefR.getInt(2));
+                loadDatas.add(loadData);
+            }
+            
+            if(loadDatas.size()==4){
+                return loadDatas;
+            }else{
+                return null;
+            }
+        } catch (SQLException e) {
+            return null;
         }
     }
     

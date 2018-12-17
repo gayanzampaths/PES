@@ -9,6 +9,7 @@ import Models.Attendence;
 import Models.Defect;
 import Models.Efficiency;
 import Models.Files;
+import Models.LoadData;
 import Models.TeamsData;
 import Models.User;
 import java.sql.Connection;
@@ -137,5 +138,9 @@ public class DbController {
 
     public boolean saveProdDef(Defect defect) {
         return this.dbimpl.saveProdDef(defect);
+    }
+
+    public ArrayList<LoadData> loadData(String d) {
+        return this.dbimpl.loadData(d);
     }
 }
