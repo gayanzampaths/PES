@@ -6,6 +6,7 @@
 package Database;
 
 import Models.Attendence;
+import Models.BestEmp;
 import Models.Defect;
 import Models.Efficiency;
 import Models.Files;
@@ -142,5 +143,9 @@ public class DbController {
 
     public ArrayList<LoadData> loadData(String d) {
         return this.dbimpl.loadData(d);
+    }
+
+    public ArrayList<BestEmp> getCuttingBestEmp(String cf, String ct) {
+        return this.dbimpl.getCuttingBestEmp(cf, ct);
     }
 }

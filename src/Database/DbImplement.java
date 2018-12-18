@@ -6,6 +6,7 @@
 package Database;
 
 import Models.Attendence;
+import Models.BestEmp;
 import Models.Defect;
 import Models.Efficiency;
 import Models.Files;
@@ -710,6 +711,27 @@ public class DbImplement implements DbInterface{
             }else{
                 return null;
             }
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    ArrayList<BestEmp> getCuttingBestEmp(String cf, String ct) {
+        try {
+            String sql = "SELECT cuttingefficiency.epfNo, cuttingefficiency.date, (AVG(cuttingefficiency.efficiency) - AVG(cuttingdefects.defectRate)) as calc from cuttingefficiency INNER JOIN cuttingdefects ON cuttingefficiency.date = cuttingdefects.date AND cuttingefficiency.epfNo = cuttingdefects.epfNo WHERE (cuttingefficiency.date >= '"+cf+"' and cuttingefficiency.date <= '"+ct+"') GROUP BY cuttingefficiency.epfNo ORDER by calc DESC LIMIT 5";
+            PreparedStatement pst = this.connection.prepareStatement(sql);
+            ResultSet rst = pst.executeQuery();
+            
+            ArrayList<BestEmp> bestEmps = new ArrayList<>();
+            BestEmp bestEmp = null;
+            
+            while(rst.next()){
+                bestEmp = new BestEmp();
+                bestEmp.setEpfNo(rst.getString(1));
+                bestEmp.setEvaluation(rst.getDouble(3));
+                bestEmps.add(bestEmp);
+            }
+            return bestEmps;
         } catch (SQLException e) {
             return null;
         }
