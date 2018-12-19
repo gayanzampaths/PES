@@ -578,7 +578,7 @@ public class EmployeeDetails extends javax.swing.JFrame {
         try {
             JOptionPane.showMessageDialog(null,"Please wait");
             
-            String reportName = "F:\\Developer_Portal\\Freelancing\\OnGoing\\PES\\src\\Reports\\EmployeeDetails";
+            String reportName = System.getProperty("user.dir")+"\\src\\Reports\\EmployeeDetails";
             
             Map<String, Object> para = new HashMap<String, Object>();
             para.put("epf",this.userd.getEpfNo());
@@ -603,7 +603,7 @@ public class EmployeeDetails extends javax.swing.JFrame {
             File f=new File(reportName+".pdf");  //set the pdf file location
             Desktop.getDesktop().open(f);   //open the relavent file
         } catch (HeadlessException | IOException | JRException e) {
-            
+            System.out.println(e);
         }
         
     }//GEN-LAST:event_reportMouseClicked

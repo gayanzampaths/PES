@@ -662,10 +662,10 @@ public class DbImplement implements DbInterface{
 
     ArrayList<LoadData> loadData(String d) {
         try {
-            String cutEff = "SELECT SUM(efficiency), COUNT(DISTINCT date) FROM cuttingefficiency WHERE date LIKE '"+d+"'";
-            String cutDef = "SELECT SUM(defectRate), COUNT(DISTINCT date) FROM cuttingdefects WHERE date LIKE '"+d+"'";
-            String prodEff = "SELECT SUM(efficiency), COUNT(DISTINCT date) FROM productionefficiency WHERE date LIKE '"+d+"'";
-            String ProdDef = "SELECT SUM(defectRate), COUNT(DISTINCT date) FROM productiondefect WHERE date LIKE '"+d+"'";
+            String cutEff = "SELECT ROUND(AVG(efficiency),2) FROM cuttingefficiency WHERE date LIKE '"+d+"'";
+            String cutDef = "SELECT ROUND(AVG(defectRate),2) FROM cuttingdefects WHERE date LIKE '"+d+"'";
+            String prodEff = "SELECT ROUND(AVG(efficiency),2) FROM productionefficiency WHERE date LIKE '"+d+"'";
+            String ProdDef = "SELECT ROUND(AVG(defectRate),2) FROM productiondefect WHERE date LIKE '"+d+"'";
             
             ArrayList<LoadData> loadDatas = new ArrayList<>();
             
@@ -675,7 +675,6 @@ public class DbImplement implements DbInterface{
             if(cutEffR.next()){
                 loadData = new LoadData();
                 loadData.setValue(cutEffR.getDouble(1));
-                loadData.setCount(cutEffR.getInt(2));
                 loadDatas.add(loadData);
             }
             
@@ -684,7 +683,6 @@ public class DbImplement implements DbInterface{
             if(cutDefR.next()){
                 loadData = new LoadData();
                 loadData.setValue(cutDefR.getDouble(1));
-                loadData.setCount(cutDefR.getInt(2));
                 loadDatas.add(loadData);
             }
             
@@ -693,7 +691,6 @@ public class DbImplement implements DbInterface{
             if(prodEffR.next()){
                 loadData = new LoadData();
                 loadData.setValue(prodEffR.getDouble(1));
-                loadData.setCount(prodEffR.getInt(2));
                 loadDatas.add(loadData);
             }
             
@@ -702,7 +699,6 @@ public class DbImplement implements DbInterface{
             if(ProdDefR.next()){
                 loadData = new LoadData();
                 loadData.setValue(ProdDefR.getDouble(1));
-                loadData.setCount(ProdDefR.getInt(2));
                 loadDatas.add(loadData);
             }
             
@@ -729,6 +725,27 @@ public class DbImplement implements DbInterface{
                 bestEmp = new BestEmp();
                 bestEmp.setEpfNo(rst.getString(1));
                 bestEmp.setEvaluation(rst.getDouble(3));
+                bestEmps.add(bestEmp);
+            }
+            return bestEmps;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    ArrayList<BestEmp> getProductBestEmp(String cf, String ct) {
+        try {
+            String sql = "SELECT productionefficiency.team,ROUND((AVG(productionefficiency.efficiency) - AVG(productiondefect.defectRate)),2) as calc from productionefficiency INNER JOIN productiondefect ON productionefficiency.date = productiondefect.date AND productionefficiency.team = productiondefect.team WHERE (productionefficiency.date >= '"+cf+"' and productionefficiency.date <= '"+ct+"') GROUP BY productionefficiency.team ORDER by calc DESC LIMIT 5";
+            PreparedStatement pst = this.connection.prepareStatement(sql);
+            ResultSet rst = pst.executeQuery();
+            
+            ArrayList<BestEmp> bestEmps = new ArrayList<>();
+            BestEmp bestEmp = null;
+            
+            while(rst.next()){
+                bestEmp = new BestEmp();
+                bestEmp.setEpfNo(rst.getString(1));
+                bestEmp.setEvaluation(rst.getDouble(2));
                 bestEmps.add(bestEmp);
             }
             return bestEmps;

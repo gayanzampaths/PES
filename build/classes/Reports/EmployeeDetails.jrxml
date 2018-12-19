@@ -302,21 +302,21 @@
 				<textElement>
 					<font fontName="Calibri" size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{religion}.equals("1") ? ("Buddhism") : ($F{religion}.equals("2")) ? ("Christian") : ($F{religion}.equals("3")) ? ("Hindu") : ("Muslim") ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{religion}.equals("1") ? ("Buddhism") : ($F{religion}.equals("2")) ? ("Christian") : ($F{religion}.equals("3")) ? ("Hindu") : ("Muslim")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="100" y="120" width="184" height="20" uuid="34798016-1e3c-4bd6-961f-d025d2f53c0a"/>
 				<textElement>
 					<font fontName="Calibri" size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nationality}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nationality}.equals("1") ? ("Sri Lankan") : ("Other")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="100" y="140" width="184" height="20" uuid="92fa86a5-2e1c-456b-bc49-c4d0b8c9231d"/>
 				<textElement>
 					<font fontName="Calibri" size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{maritalStatus}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{maritalStatus}.equals("1") ? ("Married") : ($F{maritalStatus}.equals("2")) ? ("Unmarried") : ("Devorce")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="200" y="215" width="184" height="20" uuid="df61f6d8-d960-4f5b-93b5-495576c8f3c5"/>
@@ -365,14 +365,14 @@
 				<textElement>
 					<font fontName="Calibri" size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{department}.equals("1") ? ("HR Department") : ($F{department}.equals("2")) ? ("Marketing Department") : ($F{department}.equals("3")) ? ("Cutting Department") : ($F{department}.equals("4")) ? ("Production Department") : ($F{department}.equals("5")) ? ("Finishing Department") : ("Other") ]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="100" y="438" width="184" height="20" uuid="765fd44b-6d2e-4e48-8079-9a478f2a09ef"/>
 				<textElement>
 					<font fontName="Calibri" size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{designation}.equals("1") ? ("General Manager") : ($F{designation}.equals("2")) ? ("HR Manager") : ($F{designation}.equals("3")) ? ("Production Manager") : ($F{designation}.equals("4")) ? ("Operations Manager") : ($F{designation}.equals("5")) ? ("Marketing Manager") : ($F{designation}.equals("6")) ? ("Production Supervisor") : ($F{designation}.equals("7")) ? ("Quality Assurance Supervisor") : ($F{designation}.equals("8")) ? ("Cutting Supervisor") : ("Packing Supervisor") ]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="100" y="458" width="184" height="20" uuid="a027b5ec-23cb-4780-9d97-40415b97ea11"/>

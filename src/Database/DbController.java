@@ -148,4 +148,8 @@ public class DbController {
     public ArrayList<BestEmp> getCuttingBestEmp(String cf, String ct) {
         return this.dbimpl.getCuttingBestEmp(cf, ct);
     }
+
+    public ArrayList<BestEmp> getProductBestEmp(String cf, String ct) {
+        return this.dbimpl.getProductBestEmp(cf, ct);
+    }
 }
