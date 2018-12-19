@@ -21,6 +21,8 @@ public class EditEmployeeDetails extends javax.swing.JFrame {
     private final User userd;
     
     private final DbController dbctrl;
+    
+    private String gen;
 
     /**
      * Creates new form EditEmployeeDetails
@@ -115,17 +117,17 @@ public class EditEmployeeDetails extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
-                .addContainerGap())
+                        .addComponent(jLabel2)))
+                .addGap(49, 49, 49))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,9 +136,9 @@ public class EditEmployeeDetails extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Personal Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
@@ -172,8 +174,18 @@ public class EditEmployeeDetails extends javax.swing.JFrame {
         jLabel12.setText("Martial Status :");
 
         gmale.setText("male");
+        gmale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gmaleActionPerformed(evt);
+            }
+        });
 
         gfemale.setText("Female");
+        gfemale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gfemaleActionPerformed(evt);
+            }
+        });
 
         nat.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         nat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Sri Lankan", "Others" }));
@@ -534,10 +546,8 @@ public class EditEmployeeDetails extends javax.swing.JFrame {
         u.setEpfNo(this.userd.getEpfNo());
         u.setName(name.getText());
         u.setNameUse(nameUse.getText());
-        if(gmale.isSelected()){
-            userd.setGender("Male");
-        }else{
-            userd.setGender("Female");
+        if(gen!=null){
+            u.setGender(gen);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
         u.setDob(sdf.format(dob.getDate()));
@@ -557,6 +567,22 @@ public class EditEmployeeDetails extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Update Failed!", "Failed!", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void gmaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gmaleActionPerformed
+        // TODO add your handling code here:
+        if(gmale.isSelected()){
+            gfemale.setSelected(false);
+            gen = "Male";
+        }
+    }//GEN-LAST:event_gmaleActionPerformed
+
+    private void gfemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gfemaleActionPerformed
+        // TODO add your handling code here:
+        if(gfemale.isSelected()){
+            gmale.setSelected(false);
+            gen = "Female";
+        }
+    }//GEN-LAST:event_gfemaleActionPerformed
 
     /**
      * @param args the command line arguments

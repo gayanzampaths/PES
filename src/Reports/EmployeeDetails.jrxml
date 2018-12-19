@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="701a12ba-08e3-4837-9d52-3373e8ff21d0">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="480"/>
 	<parameter name="epf" class="java.lang.String">
 		<defaultValueExpression><![CDATA[0000]]></defaultValueExpression>
 	</parameter>
@@ -85,6 +85,10 @@
 				</textElement>
 				<text><![CDATA[70/1,Malwaththa Mawatha,Kadawatha]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="84" height="72" uuid="453d6644-9b06-4ade-8367-aae75cad27f9"/>
+				<imageExpression><![CDATA["F:\\Developer_Portal\\Freelancing\\OnGoing\\PES\\src\\Application\\Images\\tm.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -298,7 +302,7 @@
 				<textElement>
 					<font fontName="Calibri" size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{religion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{religion}.equals("1") ? ("Buddhism") : ($F{religion}.equals("2")) ? ("Christian") : ($F{religion}.equals("3")) ? ("Hindu") : ("Muslim") ]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="100" y="120" width="184" height="20" uuid="34798016-1e3c-4bd6-961f-d025d2f53c0a"/>
@@ -380,10 +384,32 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="13" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="110" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="284" height="24" uuid="0498df97-8e91-432d-8b65-60041f57413c"/>
+				<textElement>
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<text><![CDATA[Prepared By : .................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="50" width="284" height="20" uuid="208ef486-2802-4df6-8ab5-bfd4b7bac334"/>
+				<textElement>
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<text><![CDATA[Approved By : .................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="50" width="162" height="20" uuid="329f6d7f-f75d-4bbe-bcab-c9b72310d0ff"/>
+				<textElement>
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<text><![CDATA[Date : ...../....../...........]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
